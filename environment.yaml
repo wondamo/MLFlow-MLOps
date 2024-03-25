@@ -1,0 +1,19 @@
+name: mlfenv
+channels:
+  - conda-forge
+  - salilab
+  - defaults
+dependencies:
+  - python=3.12
+  - pip
+  - pip:
+    - spacy
+    - pandas
+    - numpy
+    - matplotlib
+    - scikit-learn
+    - tensorflow
+    - keras
+    - mlflow
+    - ipykernel
+prefix: C:\Users\wonde\anaconda3\envs\mlfenv
