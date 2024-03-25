@@ -1,0 +1,10 @@
+name: Sentiment Analysis
+
+conda_env: environment.yaml
+
+entry_points:
+  main:
+    parameters:
+      params: {type: path, default: 'params.yaml'}
+    command: "python src/stages/preprocess.py --config={params}"
+
