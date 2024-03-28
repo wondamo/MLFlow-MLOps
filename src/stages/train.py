@@ -1,5 +1,7 @@
 import argparse
 import yaml
+import json
+import mlflow
 import pandas as pd
 from typing import Text
 from tensorflow.keras.preprocessing.text import Tokenizer
@@ -7,6 +9,7 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 from src.report.visualize import plot_model_accuracy, plot_model_loss
 from src.train.train import train_model
 from src.utils.logs import get_logger
+from src.utils.custom_model import TensorWrapper, conda_env
 
 
 def train(config_path: Text) -> None:
@@ -33,9 +36,24 @@ def train(config_path: Text) -> None:
     
     maxlen=200
     X_train = pad_sequences(X_train, padding='post', maxlen=maxlen)
+
+    with open(config["train"]["tokenizer"], "w") as json_file:
+        json.dump(tokenizer.to_json(), json_file)
     
     logger.info("Train model")
     model, history = train_model(X_train, y_train, vocab_size, config)
+
+    logger.info("Save MLflow Model")
+    artifacts_dict = {
+        'tensorflow_model': config["train"]["model_checkpoint"],
+        'tokenizer': config["train"]["tokenizer"]
+    }
+    mlflow.pyfunc.save_model(
+        path="model/tensorflow_model",
+        python_model=TensorWrapper(),
+        artifacts=artifacts_dict,
+        conda_env=conda_env
+    )
 
     logger.info("Save model accuracy plot")
     plt = plot_model_accuracy(history)
