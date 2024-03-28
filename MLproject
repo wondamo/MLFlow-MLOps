@@ -5,6 +5,20 @@ conda_env: environment.yaml
 entry_points:
   main:
     parameters:
-      params: {type: path, default: 'params.yaml'}
+      params: {type: path, default: params.yaml}
     command: "python src/stages/preprocess.py --config={params}"
 
+  data_split:
+    parameters:
+      params: {type: path, default: params.yaml}
+    command: "python src/stages/data_split.py --config={params}"
+
+  train:
+    parameters:
+      params: {type: path, default: params.yaml}
+    command: "python src/stages/train.py --config={params}"
+
+  evaluate:
+    parameters:
+      params: {type: path, default: params.yaml}
+    command: "python src/stages/evaluate.py --config={params}"
