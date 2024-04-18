@@ -1,0 +1,18 @@
+apiVersion: "serving.kserve.io/v1beta1"
+kind: "InferenceService"
+metadata:
+  name: "mlflow-sentiment-analysis"
+  namespace: "mlflow-serve"
+spec:
+  predictor:
+    imagePullSecrets:
+          - name: ecrsecret
+    containers:
+      - name: "mlflow-sentiment"
+        image: "850782150363.dkr.ecr.us-east-1.amazonaws.com/wondamo:latest"
+        ports:
+          - containerPort: 8080
+            protocol: TCP
+        env:
+          - name: PROTOCOL
+            value: "v2"

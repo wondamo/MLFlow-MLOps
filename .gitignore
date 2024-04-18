@@ -2,4 +2,5 @@ __pycache__
 mlruns/
 data/
 model/
+model_dir/
 reports/
